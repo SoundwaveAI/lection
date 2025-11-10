@@ -39,6 +39,17 @@ int main()
   {
     return get(size() - 1);
   }
+  void IntArray::add(int i)
+  {
+    int * tmp = new int[size() + 1];
+    for (size_t = 0; i < size(); ++i)
+    {
+      tmp[i] = get(i);
+    }
+    delete[]a;
+    a = tmp;
+    ++k;
+  }
   int next = 0;
   std::cin >> next;
   try
