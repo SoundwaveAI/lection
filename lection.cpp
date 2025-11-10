@@ -14,4 +14,8 @@ int main()
   }
   IntArray a;
   a.add(next);
+  for (size_t i = 0; i < a.size(); ++i)
+  {
+    int d = a.get(i);
+  }
 }
