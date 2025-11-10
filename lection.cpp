@@ -4,7 +4,7 @@ struct IntArray
   void add(int i);
   int at(size_t id) const;
   int get(size_t id) const noexcept;
-  sixe_t size() const noexcept;
+  size_t size() const noexcept;
   int last() const noexcept;
   IntArray(int i);
   ~IntArray();
@@ -17,17 +17,21 @@ IntArray::~IntArray()
   }
   IntArray::IntArray(int i) :
     a(new int[1]),
-    k(1);
+    k(1)
   {
     *a = i;
   }
   int IntArray::get(size_t id) const noexcept
   {
+    if (id >= k)
+    {
+      return 0;
+    }
     return a[id];
   }
   int IntArray::at(size_t id) const
   {
-    if (!id < k)
+    if (id >= k)
     {
       throw std::logic_error("ne");
     }
@@ -39,15 +43,16 @@ IntArray::~IntArray()
   }
   int IntArray::last() const noexcept
   {
-    return get(size() - 1);
+    return get(k - 1);
   }
   void IntArray::add(int i)
   {
-    int * tmp = new int[size() + 1];
-    for (size_t = 0; i < size(); ++i)
+    int * tmp = new int[k + 1];
+    for (size_t j = 0; j < k; ++j)
     {
-      tmp[i] = get(i);
+      tmp[j] = a[j];
     }
+    tmp[k] = i;
     delete[]a;
     a = tmp;
     ++k;
@@ -63,7 +68,7 @@ int main()
     {
       a.add(next);
     }
-    if (!std::cin.fail()) && !std::cin.eof())
+    if (std::cin.fail() && !std::cin.eof())
     {
       return 1;
     }
@@ -73,17 +78,20 @@ int main()
       std::cout << "0" << "\n";
       return 0;
     }
-    size_t count = 1;
+    size_t count = 0;
     for (size_t i = 0; i < a.size() - 1; ++i)
     {
       int d = a.get(i);
-      count+= !(d % a.last());
+      if (d % lastelement == 0)
+      {
+        count++;
+      }
     }
     std::cout << count << "\n";
     return 0;
-    catch (const std::bad_alloc())
-    {
+  } catch (const std::bad_alloc()) {
     return 2;
-    }
+  } catch (...) {
+    return 1;
   }
 }
