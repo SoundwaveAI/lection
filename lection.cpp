@@ -58,27 +58,32 @@ int main()
   std::cin >> next;
   try
   {
-  IntArray a(next); //nuzen polzovatelckii constructor
-  //IntArray a; конструктор по умолчанию
-  //a.add(next);
-  while (std::cin >> next)
-  {
-    a.add(next);
-  }
-  if (!std::cin.fail()) && !std::cin.eof())
-  {
-    return 1;
-  }
-  size_t count = 1;
-  for (size_t i = 0; i < a.size() - 1; ++i)
-  {
-    int d = a.get(i);
-    count+= !(d % a.last());
-  }
-  std::cout << count << "\n";
-  return 0;
-  catch (const std::bad_alloc())
-  {
-  return 2;
+    IntArray a(next);
+    while (std::cin >> next)
+    {
+      a.add(next);
+    }
+    if (!std::cin.fail()) && !std::cin.eof())
+    {
+      return 1;
+    }
+    int lastelement = a.last();
+    if (lastelement == 0)
+    {
+      std::cout << "0" << "\n";
+      return 0;
+    }
+    size_t count = 1;
+    for (size_t i = 0; i < a.size() - 1; ++i)
+    {
+      int d = a.get(i);
+      count+= !(d % a.last());
+    }
+    std::cout << count << "\n";
+    return 0;
+    catch (const std::bad_alloc())
+    {
+    return 2;
+    }
   }
 }
