@@ -11,6 +11,8 @@ int main()
 {
   int next = 0;
   std::cin >> next;
+  try
+  {
   IntArray a(next); //nuzen polzovatelckii constructor
   //IntArray a; конструктор по умолчанию
   //a.add(next);
@@ -18,7 +20,7 @@ int main()
   {
     a.add(next);
   }
-  if (!std::cin.fail())
+  if (!std::cin.fail()) && !std::cin.eof())
   {
     return 1;
   }
@@ -30,4 +32,8 @@ int main()
   }
   std::cout << count << "\n";
   return 0;
+  catch (const std::bad_alloc())
+  {
+  return 2;
+  }
 }
