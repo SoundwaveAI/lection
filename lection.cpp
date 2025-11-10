@@ -11,9 +11,7 @@ struct IntArray
   int * a;
   size_t k;
 };
-int main()
-{
-  IntArray::~IntArray()
+IntArray::~IntArray()
   {
     delete[] a;
   }
@@ -23,11 +21,15 @@ int main()
   {
     *a = i;
   }
-  int Array::get(size_t id) const noexcept
+  int IntArray::get(size_t id) const noexcept
+  {
+    return a[id];
+  }
+  int IntArray::at(size_t id) const
   {
     if (!id < k)
     {
-      throw std::logic_error("bad id");
+      throw std::logic_error("ne");
     }
     return a[id];
   }
@@ -50,6 +52,8 @@ int main()
     a = tmp;
     ++k;
   }
+int main()
+{
   int next = 0;
   std::cin >> next;
   try
