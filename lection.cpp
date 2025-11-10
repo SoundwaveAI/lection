@@ -2,8 +2,10 @@
 struct IntArray
 {
   void add(int i);
-  int get(size_t id) const;
-  int last() const;
+  int at(size_t id) const;
+  int get(size_t id) const noexcept;
+  sixe_t size() const noexcept;
+  int last() const noexcept;
   IntArray(int i);
   ~IntArray();
   int * a;
@@ -15,12 +17,28 @@ int main()
   {
     delete[] a;
   }
-  IntArray::IntArray(int i)
-  {
-    a (new int[1]),
+  IntArray::IntArray(int i) :
+    a(new int[1]),
     k(1);
+  {
+    *a = i;
   }
-  a[0] = i;
+  int Array::get(size_t id) const noexcept
+  {
+    if (!id < k)
+    {
+      throw std::logic_error("bad id");
+    }
+    return a[id];
+  }
+  size_t IntArray::size() const noexcept
+  {
+    return k;
+  }
+  int IntArray::last() const noexcept
+  {
+    return get(size() - 1);
+  }
   int next = 0;
   std::cin >> next;
   try
