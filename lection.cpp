@@ -6,9 +6,15 @@ struct IntArray
   int last() const;
   IntArray(int i);
   ~IntArray();
+  int * a;
+  size_t k;
 };
 int main()
 {
+  IntArray::~IntArray()
+  {
+    delete[] a;
+  }
   int next = 0;
   std::cin >> next;
   try
