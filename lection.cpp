@@ -15,6 +15,12 @@ int main()
   {
     delete[] a;
   }
+  IntArray::IntArray(int i)
+  {
+    a (new int[1]),
+    k(1);
+  }
+  a[0] = i;
   int next = 0;
   std::cin >> next;
   try
