@@ -3,13 +3,17 @@ struct IntArray
 {
   void add(int i);
   int get(size_t id) const;
+  int last() const;
+  IntArray(int i);
+  ~IntArray();
 };
 int main()
 {
   int next = 0;
   std::cin >> next;
-  IntArray a;
-  a.add(next);
+  IntArray a(next); //nuzen polzovatelckii constructor
+  //IntArray a; конструктор по умолчанию
+  //a.add(next);
   while (std::cin >> next)
   {
     a.add(next);
@@ -18,8 +22,12 @@ int main()
   {
     return 1;
   }
-  for (size_t i = 0; i < a.size(); ++i)
+  size_t count = 1;
+  for (size_t i = 0; i < a.size() - 1; ++i)
   {
     int d = a.get(i);
+    count+= !(d % a.last());
   }
+  std::cout << count << "\n";
+  return 0;
 }
