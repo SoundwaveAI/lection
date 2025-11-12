@@ -9,6 +9,7 @@ struct IntArray
   IntArray(int i);
   ~IntArray();
   IntArray(const IntArray& rhs);
+  IntArray(IntArray&& rhs);
   IntArray& operator = (const IntArray& rhs);
   int * a;
   size_t k;
