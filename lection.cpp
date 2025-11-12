@@ -14,70 +14,86 @@ struct IntArray
   size_t k;
 };
 IntArray::~IntArray()
-  {
-    delete[] a;
-  }
-  IntArray::IntArray(int i) :
-    a(new int[1]),
-    k(1)
+{
+  delete[] a;
+}
+IntArray::IntArray(int i) :
+  a(new int[1]),
+  k(1)
   {
     *a = i;
-  }
-  IntArray::IntArray(const IntArray& rhs) :
-    data(new int[rhs.get_size()),
-    size(rhs.get_size())
+}
+IntArray::IntArray(const IntArray& rhs) :
+  data(new int[rhs.get_size()),
+  size(rhs.get_size())
+  {
     for (size_t i = 0; i < get_size(); ++i)
     {
       data[i] = rhs.get_size(i);
     }
-  IntArray& IntArray::operator=(const IntArray& rhs)
+}
+IntArray& IntArray::operator=(const IntArray& rhs)
+{
+  int* tmp = new int[rhs.get_size()];
+  for (size_t i = 0; i < rhs.get_size(); ++i)
   {
-    int* tmp = new int[rhs.get_size()];
-    for (size_t i = 0; i < rhs.get_size(); ++i)
-    {
-      tmp[i] = rhs.get(i);
-    }
-    delete[] data;
-    data = tmp;
-    size = rhs.get_size();
-    return *this;
-  } 
-  int IntArray::get_size(size_t id) const noexcept
-  {
-    if (id >= k)
-    {
-      return 0;
-    }
-    return a[id];
+    tmp[i] = rhs.get(i);
   }
-  int IntArray::at(size_t id) const
+  delete[] data;
+  data = tmp;
+  size = rhs.get_size();
+  return *this;
+}
+IntArray::IntArray(IntArray && rhs) :
+  data(rhs.data);
+  size(rhs.get_size())
   {
-    if (id >= k)
-    {
-      throw std::logic_error("ne");
-    }
-    return a[id];
-  }
-  size_t IntArray::size() const noexcept
+    rhs.data = nullptr;
+}
+IntArray& IntArray::operator=(const IntArray && rhs)
+{
+  delete[] data;
+  data = rhs.data;
+  size = rhs.size;
+  rhs.data = nullptr;
+  return *this;
+}
+int IntArray::get_size(size_t id) const noexcept
+{
+  if (id >= k)
   {
-    return k;
+    return 0;
   }
-  int IntArray::last() const noexcept
+  return a[id];
+}
+int IntArray::at(size_t id) const
+{
+  if (id >= k)
   {
-    return get(k - 1);
+    throw std::logic_error("ne");
   }
-  void IntArray::add(int i)
+  return a[id];
+}
+size_t IntArray::size() const noexcept
+{
+  return k;
+}
+int IntArray::last() const noexcept
+{
+  return get(k - 1);
+}
+void IntArray::add(int i)
+{
+  int * tmp = new int[k + 1];
+  for (size_t j = 0; j < k; ++j)
   {
-    int * tmp = new int[k + 1];
-    for (size_t j = 0; j < k; ++j)
-    {
-      tmp[j] = a[j];
-    }
-    tmp[k] = i;
-    delete[]a;
-    a = tmp;
-    ++k;
+    tmp[j] = a[j];
   }
+  tmp[k] = i;
+  delete[]a;
+  a = tmp;
+  ++k;
+}
 int main()
 {
   int next = 0;
