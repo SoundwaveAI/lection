@@ -1,18 +1,18 @@
 #include <iostream>
 struct IntArray
 {
-  void add(int i);
-  int at(size_t id) const;
-  int get_size(size_t id) const noexcept;
-  size_t size() const noexcept;
-  int last() const noexcept;
-  IntArray(int i);
-  ~IntArray();
+  int* data;
+  size_t size_v;
+  IntArray(int size, int v = 0);
   IntArray(const IntArray& rhs);
-  IntArray(IntArray&& rhs);
+  IntArray(IntArray&& rhs) noexcept;
+  ~IntArray();
   IntArray& operator = (const IntArray& rhs);
-  int * a;
-  size_t k;
+  IntArray& operator = (IntArray&& rhs) noexcept;
+  size_t size() const noexcept;
+  int get(size id) const;
+  void set(size_t id, int vi);
+  void add(int vi);
 };
 IntArray::~IntArray()
 {
