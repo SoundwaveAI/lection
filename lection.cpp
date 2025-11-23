@@ -1,4 +1,8 @@
 #include <iostream>
+#include <fsctream>
+#include <algorithm>
+#include <new>
+
 struct IntArray
 {
   int* data;
@@ -107,6 +111,99 @@ void IntArray::add(int v)
   data = tmp;
   ++size_v;
 }
+
+class IntMatrix
+{
+  size_t rows;
+  size_t cols;
+  IntArray arr;
+public:
+  IntMatrix(size_t r, size_t c) : rows(r), cols(c), arr(r * c)
+  {}
+  void set(size_t r, size_t c, int val)
+  {
+    arr.set(r * cols + c, val);
+  }
+  int get(size_t r, size_t c) const
+  {
+    return arr.get(r * cols + c);
+  }
+  void print() const
+  {
+    for (size_t i = 0; i < rows; ++i)
+    {
+      for (size_t j = 0; j < cols; ++j)
+      {
+        std::cout << get(i, j) << (j == cols - 1 ? "" : " ");
+      }
+      std::cout << "\n";
+    }
+  }
+  void addColumn(size_t after_col, int val)
+  {
+    size_t index = (after_col == 0) ? 0 : after_col;
+    if (index > cols)
+    {
+      throw std::logic_error("Wrong Column index");
+    }
+    size_t new_cols = cols + 1;
+    IntArray new_arr(rows * new_cols);
+    for (size_t i = 0; i < rows; ++i)
+    {
+      for (size_t j = 0; j < new_cols; ++j)
+      {
+        size_t new_index = i * new_cols + j;
+        if (j < index)
+        {
+          new_arr.set(new_index, get(i, j));
+        }
+        else if (j == index)
+        {
+          new_arr.set(new_index, v);
+        }
+        else
+        {
+          new_arr.set(new_index, get(i, j - 1));
+        }
+      }
+    }
+    arr = std::move(new_arr);
+    cols = new_cols;
+  }
+
+  void addRowAndCol(size_t a_row, size_t a_col)
+  {
+    size_t t_r = (a_row == 0) ? 0 : a_row;
+    size_t t_c = (a_col == 0) ? 0 : a_col;
+    if (t_r > rows || t_c > cols)
+    {
+      throw std::logic_error("Wrong index");
+    }
+    size_t new_rows = rows + 1;
+    size_t new_cols = cols + 1;
+    IntArray new_arr(new_rows * new_cols, 0);
+    for (size_t i = 0; i < new_rows; ++i)
+    {
+      if (i == t_r)
+      {
+        continue;
+      }
+      size_t old_i = (i < t_r) ? i : i - 1;
+      for (size_t j = 0; j < new_cols; ++j)
+      {
+        if (j == t_c)
+        {
+          continue;
+        }
+        size_t old_j = (j < t_c) ? j : j - 1;
+        new_arr.set(i * new_cols + j, get(old_i, old_j));
+      }
+    }
+    arr = std::move(new_arr);
+    rows = new_rows;
+    cols = new_cols;
+  }
+};
 int main()
 {
   int next = 0;
