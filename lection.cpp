@@ -14,86 +14,98 @@ struct IntArray
   void set(size_t id, int vi);
   void add(int vi);
 };
+
 IntArray::~IntArray()
 {
   delete[] a;
 }
-IntArray::IntArray(int i) :
-  a(new int[1]),
-  k(1)
+IntArray::IntArray(int size, int v) :
+  data(new int[size]),
+  size_v(size)
+{
+  for (size_t i = 0; i < size_v; ++i)
   {
-    *a = i;
+    data[i] = v;
+  }
 }
 IntArray::IntArray(const IntArray& rhs) :
-  data(new int[rhs.get_size()),
-  size(rhs.get_size())
+  data(new int[rhs.size_v]),
+  size_v(rhs.size_v)
+{
+  for (size_t i = 0; i < size_v; ++i)
   {
-    for (size_t i = 0; i < get_size(); ++i)
-    {
-      data[i] = rhs.get_size(i);
-    }
+    data[i] = rhs.data[i];
+  }
 }
 IntArray& IntArray::operator=(const IntArray& rhs)
 {
-  int* tmp = new int[rhs.get_size()];
-  for (size_t i = 0; i < rhs.get_size(); ++i)
+  if (this != &rhs)
   {
-    tmp[i] = rhs.get(i);
+    int* tmp = new int[rhs.size_v];
+    for (size_t i = 0; i < rhs.size_v; ++i)
+    {
+      tmp[i] = rhs.data[i];
+    }
+    delete[] data;
+    data = tmp;
+    size_v = rhs.size_v;
   }
-  delete[] data;
-  data = tmp;
-  size = rhs.get_size();
   return *this;
 }
-IntArray::IntArray(IntArray && rhs) :
+IntArray::IntArray(IntArray&& rhs) noexcept:
   data(rhs.data);
-  size(rhs.get_size())
-  {
-    rhs.data = nullptr;
-}
-IntArray& IntArray::operator=(const IntArray && rhs)
+  size_v(rhs.size_v)
 {
-  delete[] data;
-  data = rhs.data;
-  size = rhs.size;
   rhs.data = nullptr;
+  rhs.size_v = 0;
+}
+IntArray& IntArray::operator=(const IntArray&& rhs) noexcept
+{
+  if (this != &rhs)
+  {
+    delete[] data;
+    data = rhs.data;
+    size_v = rhs.size_v;
+    rhs.data = nullptr;
+    rhs.size_v = 0;
+  }
   return *this;
 }
-int IntArray::get_size(size_t id) const noexcept
+
+int IntArray::get(size_t id) const
 {
-  if (id >= k)
+  if (id >= size_v)
   {
-    return 0;
+    throw std::out_of_range("Index out of range");
   }
-  return a[id];
+  return data[id];
 }
-int IntArray::at(size_t id) const
+
+int IntArray::set(size_t id, int v) const
 {
-  if (id >= k)
+  if (id >= size_v)
   {
-    throw std::logic_error("ne");
+    throw std::out_of_range("Index out of range");
   }
-  return a[id];
+  data[id] = v;
 }
+
 size_t IntArray::size() const noexcept
 {
-  return k;
+  return size_v;
 }
-int IntArray::last() const noexcept
+
+void IntArray::add(int v)
 {
-  return get(k - 1);
-}
-void IntArray::add(int i)
-{
-  int * tmp = new int[k + 1];
-  for (size_t j = 0; j < k; ++j)
+  int * tmp = new int[size_v + 1];
+  for (size_t i = 0; i < size_v; ++i)
   {
-    tmp[j] = a[j];
+    tmp[i] = data[i];
   }
-  tmp[k] = i;
-  delete[]a;
-  a = tmp;
-  ++k;
+  tmp[size_v] = v;
+  delete[] data;
+  data = tmp;
+  ++size_v;
 }
 int main()
 {
