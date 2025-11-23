@@ -63,7 +63,7 @@ IntArray::IntArray(IntArray&& rhs) noexcept:
   rhs.data = nullptr;
   rhs.size_v = 0;
 }
-IntArray& IntArray::operator=(const IntArray&& rhs) noexcept
+IntArray& IntArray::operator=(IntArray&& rhs) noexcept
 {
   if (this != &rhs)
   {
@@ -85,13 +85,13 @@ int IntArray::get(size_t id) const
   return data[id];
 }
 
-int IntArray::set(size_t id, int v) const
+int IntArray::set(size_t id, int vi)
 {
   if (id >= size_v)
   {
     throw std::out_of_range("Index out of range");
   }
-  data[id] = v;
+  data[id] = vi;
 }
 
 size_t IntArray::size() const noexcept
@@ -120,9 +120,9 @@ class IntMatrix
 public:
   IntMatrix(size_t r, size_t c) : rows(r), cols(c), arr(r * c)
   {}
-  void set(size_t r, size_t c, int val)
+  void set(size_t r, size_t c, int vi)
   {
-    arr.set(r * cols + c, val);
+    arr.set(r * cols + c, vi);
   }
   int get(size_t r, size_t c) const
   {
@@ -139,7 +139,7 @@ public:
       std::cout << "\n";
     }
   }
-  void addColumn(size_t after_col, int val)
+  void addColumn(size_t after_col, int vi)
   {
     size_t index = (after_col == 0) ? 0 : after_col;
     if (index > cols)
@@ -159,7 +159,7 @@ public:
         }
         else if (j == index)
         {
-          new_arr.set(new_index, v);
+          new_arr.set(new_index, vi);
         }
         else
         {
@@ -206,7 +206,7 @@ public:
 };
 int main(int argc, char* argv[])
 {
-  if (argc < 2
+  if (argc < 2)
   {
     return 1;
   }
@@ -232,7 +232,7 @@ int main(int argc, char* argv[])
         if (!(file >> v))
         {
           return 1;
-          metrix.set(i, j, v);
+          matrix.set(i, j, v);
         }
       }
     }
@@ -243,7 +243,7 @@ int main(int argc, char* argv[])
       {
         size_t col_index;
         int v;
-        if (!(std::cin >> cols_index >> v))
+        if (!(std::cin >> col_index >> v))
         {
           return 1;
         }
