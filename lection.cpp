@@ -204,41 +204,83 @@ public:
     cols = new_cols;
   }
 };
-int main()
+int main(int argc, char* argv[])
 {
-  int next = 0;
-  std::cin >> next;
+  if (argc < 2
+  {
+    return 1;
+  }
+  std::ifstream file(argv[1]);
+  if (!file.is_open())
+  {
+    return 1;
+  }
+  size_t rows = 0;
+  size_t cols = 0;
+  if (!(file >> rows >> cols))
+  {
+    return 1;
+  }
   try
   {
-    IntArray a(next);
+    IntMatrix matrix(rows, cols);
+    for (size_t i = 0; i < rows; ++i)
+    {
+      for (size_t j = 0; j < cols; ++j)
+      {
+        int v;
+        if (!(file >> v))
+        {
+          return 1;
+          metrix.set(i, j, v);
+        }
+      }
+    }
+    int next = 0;
     while (std::cin >> next)
     {
-      a.add(next);
+      if (next == 2)
+      {
+        size_t col_index;
+        int v;
+        if (!(std::cin >> cols_index >> v))
+        {
+          return 1;
+        }
+        matrix.addColumn(col_index, v);
+        matrix.print();
+      }
+      else if (next == 3)
+      {
+        size_t row_index, col_index;
+        if (!(std::cin >> row_index >> col_index))
+        {
+          return 1;
+        }
+        matrix.addRowAndCol(row_index, col_index);
+        matrix.print();
+      }
+      else
+      {
+        return 3;
+      }
     }
     if (std::cin.fail() && !std::cin.eof())
     {
       return 1;
     }
-    int lastelement = a.last();
-    if (lastelement == 0)
-    {
-      std::cout << "0" << "\n";
-      return 0;
-    }
-    size_t count = 0;
-    for (size_t i = 0; i < a.size() - 1; ++i)
-    {
-      int d = a.get(i);
-      if (d % lastelement == 0)
-      {
-        count++;
-      }
-    }
-    std::cout << count << "\n";
-    return 0;
-  } catch (const std::bad_alloc()) {
+  }
+  catch (const std::bad_alloc&)
+  {
     return 2;
-  } catch (...) {
+  }
+  catch (const std::logic_error&)
+  {
+    return 3;
+  }
+  catch (...)
+  {
     return 1;
   }
+  return 0;
 }
