@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fsctream>
+#include <fstream>
 #include <algorithm>
 #include <new>
 
@@ -11,17 +11,17 @@ struct IntArray
   IntArray(const IntArray& rhs);
   IntArray(IntArray&& rhs) noexcept;
   ~IntArray();
-  IntArray& operator = (const IntArray& rhs);
-  IntArray& operator = (IntArray&& rhs) noexcept;
+  IntArray& operator=(const IntArray& rhs);
+  IntArray& operator=(IntArray&& rhs) noexcept;
   size_t size() const noexcept;
-  int get(size id) const;
+  int get(size_t id) const;
   void set(size_t id, int vi);
   void add(int vi);
 };
 
 IntArray::~IntArray()
 {
-  delete[] a;
+  delete[] data;
 }
 IntArray::IntArray(int size, int v) :
   data(new int[size]),
@@ -57,7 +57,7 @@ IntArray& IntArray::operator=(const IntArray& rhs)
   return *this;
 }
 IntArray::IntArray(IntArray&& rhs) noexcept:
-  data(rhs.data);
+  data(rhs.data),
   size_v(rhs.size_v)
 {
   rhs.data = nullptr;
