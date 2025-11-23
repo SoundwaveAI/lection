@@ -85,7 +85,7 @@ int IntArray::get(size_t id) const
   return data[id];
 }
 
-int IntArray::set(size_t id, int vi)
+void IntArray::set(size_t id, int vi)
 {
   if (id >= size_v)
   {
